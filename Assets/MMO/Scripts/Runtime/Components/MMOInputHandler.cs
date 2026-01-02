@@ -75,13 +75,11 @@ namespace Blocks.Gameplay.MMO
         private void RegisterInputActions()
         {
             m_InputActions.Player.Inventory.performed += HandleInventoryToggle;
-            m_InputActions.UI.Click.performed += HandleInventoryClick;
         }
 
         private void UnregisterInputActions()
         {
             m_InputActions.Player.Inventory.performed -= HandleInventoryToggle;
-            m_InputActions.UI.Click.performed -= HandleInventoryClick;
         }
 
         #endregion
@@ -92,20 +90,6 @@ namespace Blocks.Gameplay.MMO
         {
             Debug.Log("[MMOInputHandler] HandleInventoryToggle called!");
             onInventoryToggle?.Raise();
-        }
-
-        private void HandleInventoryClick(InputAction.CallbackContext context)
-        {
-            if (m_MmoAddon == null || !m_MmoAddon.IsInventoryOpen) return;
-
-            var mouse = Mouse.current;
-            if (mouse == null) return;
-
-            var screenPos = mouse.position.ReadValue();
-            if (m_MmoAddon.IsPointerOverInventory(screenPos))
-            {
-                Debug.Log($"[MMOInputHandler] UI Click on inventory by {context.control?.device?.name ?? "unknown"} at {screenPos}");
-            }
         }
 
         /// <summary>

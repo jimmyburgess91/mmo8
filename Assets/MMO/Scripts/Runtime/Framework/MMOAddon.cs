@@ -133,16 +133,6 @@ namespace Blocks.Gameplay.MMO
         }
 
         /// <summary>
-        /// Checks if the screen position is over the inventory panel while inventory is open.
-        /// </summary>
-        public bool IsPointerOverInventory(Vector2 screenPosition)
-        {
-            // UI Toolkit handles input automatically through the EventSystem
-            // This method is kept for compatibility but is less relevant with UI Toolkit
-            return m_IsInventoryOpen;
-        }
-
-        /// <summary>
         /// Exposes whether the inventory is currently open to other components.
         /// </summary>
         public bool IsInventoryOpen => m_IsInventoryOpen;
@@ -167,16 +157,6 @@ namespace Blocks.Gameplay.MMO
             {
                 ToggleInventory();
             }
-        }
-
-        /// <summary>
-        /// Finds the inventory panel in the active scene by name. Prefab cannot reference scene objects.
-        /// Looks for "Inventory" at root, then as a child of "Canvas".
-        /// </summary>
-        private void ResolveInventoryPanel()
-        {
-            // This method is deprecated with UI Toolkit implementation.
-            // InventoryUIController.Initialize() is now the proper initialization method.
         }
 
         #endregion
