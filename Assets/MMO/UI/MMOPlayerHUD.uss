@@ -1,0 +1,101 @@
+#hud-root {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#health-info-container {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.0);
+    padding: 15px;
+    border-radius: 5px;
+    width: 320px;
+}
+
+#player-health-bar {
+    width: 100%;
+    height: 30px;
+    min-height: 30px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    flex-shrink: 0;
+    justify-content: center;
+}
+
+#player-stamina-bar {
+    width: 100%;
+    height: 30px;
+    min-height: 30px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    flex-shrink: 0;
+    justify-content: center;
+}
+
+/* Notification Container */
+.notification-container {
+    position: absolute;
+    top: 80px;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+/* Reticle Container */
+#reticle-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#player-reticle {
+    width: 4px;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 2px;
+}
+
+/* Respawn Message Overlay */
+#message-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#message-label {
+    font-size: 36px;
+    color: white;
+    -unity-font-style: bold;
+    margin-bottom: 20px;
+}
+
+#message-divider {
+    width: 200px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+}
+
+#countdown-label {
+    font-size: 72px;
+    color: white;
+    -unity-font-style: bold;
+}
+
+/* Inventory Panel Positioning Override */
+#inventory-panel {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    width: 550px;
+    max-height: 600px;
+}

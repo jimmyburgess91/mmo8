@@ -1,0 +1,19 @@
+{
+    "name": "Blocks.Gameplay.MMO.Editor",
+    "rootNamespace": "Blocks.Gameplay.MMO.Editor",
+    "references": [
+        "Blocks.Gameplay.Core",
+        "Blocks.Gameplay.MMO"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

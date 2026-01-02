@@ -1,0 +1,19 @@
+{
+    "name": "Blocks.Gameplay.MMO",
+    "rootNamespace": "Blocks.Gameplay.MMO",
+    "references": [
+        "Unity.Netcode.Runtime",
+        "Unity.Netcode.Components",
+        "Unity.InputSystem",
+        "Blocks.Gameplay.Core"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

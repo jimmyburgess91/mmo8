@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/Blocks/Common/BlocksRuntimeTheme.tss?fileID=-4733365628477956816&amp;guid=2e74663645b63fe43ad48957a2398ce5&amp;type=3#BlocksRuntimeTheme"/>
+    
+    <ui:VisualElement name="inventory-panel" class="inventory-panel">
+        <ui:VisualElement name="inventory-header-container" class="inventory-header-container">
+            <ui:Label name="inventory-title" text="INVENTORY" class="inventory-title"/>
+            <ui:Button name="close-inventory-button" text="✕" class="inventory-close-button"/>
+        </ui:VisualElement>
+        
+        <ui:VisualElement name="slots-container" class="slots-container">
+            <!-- Slots will be dynamically created by InventoryUIController -->
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

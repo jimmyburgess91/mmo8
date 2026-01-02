@@ -1,0 +1,94 @@
+#inventory-panel {
+    /* Position is now controlled by MMOPlayerHUD.uss */
+    background-color: rgba(0, 0, 0, 0.85);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+}
+
+#inventory-header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.inventory-title {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.95);
+    -unity-font-style: bold;
+    margin: 0;
+}
+
+.inventory-close-button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    margin: 0;
+    background-color: rgba(255, 50, 50, 0.7);
+    border: 1px solid rgba(255, 100, 100, 0.8);
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    -unity-text-align: middle-center;
+}
+
+.inventory-close-button:hover {
+    background-color: rgba(255, 50, 50, 1);
+}
+
+.inventory-close-button:active {
+    background-color: rgba(200, 40, 40, 1);
+}
+
+#slots-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 5px;
+    align-content: flex-start;
+}
+
+.inventory-slot {
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    background-color: rgba(50, 50, 50, 0.9);
+    border: 2px solid rgba(100, 100, 100, 0.7);
+    border-radius: 4px;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: link;
+}
+
+.inventory-slot:hover {
+    background-color: rgba(80, 80, 80, 1);
+    border-color: rgba(150, 150, 150, 1);
+}
+
+.inventory-slot:active {
+    background-color: rgba(40, 40, 40, 1);
+    border-color: rgba(80, 80, 80, 0.8);
+}
+
+.inventory-slot-icon {
+    width: 40px;
+    height: 40px;
+    opacity: 0.8;
+}
+
+.inventory-slot-empty {
+    color: rgba(100, 100, 100, 0.5);
+    font-size: 12px;
+}
