@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 using Blocks.Gameplay.Core;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Blocks.Gameplay.MMO
 {
@@ -14,11 +17,11 @@ namespace Blocks.Gameplay.MMO
         #region Fields & Properties
 
         [Header("Inventory Configuration")]
-        [Tooltip("Number of inventory slots to create (e.g., 100 for 10x10 grid)")]
-        [SerializeField] private int inventorySlotCount = 100;
+        [Tooltip("Number of inventory slots to create (e.g., 16 for 4x4 grid)")]
+        [SerializeField] private int inventorySlotCount = 16;
 
         [Tooltip("Number of columns in the inventory grid")]
-        [SerializeField] private int gridColumns = 10;
+        [SerializeField] private int gridColumns = 4;
 
         [Header("Component Dependencies")]
         [Tooltip("Reference to the MMOAddon that owns this inventory")]
@@ -32,6 +35,9 @@ namespace Blocks.Gameplay.MMO
 
         // State
         private bool m_IsVisible = false;
+        private int m_EquippedSlotIndex = -1;  // -1 means no item is equipped
+        private Sprite m_SwordSprite;
+        private bool[] m_SlotHasItem;  // Track which slots contain items
 
         #endregion
 
@@ -77,6 +83,8 @@ namespace Blocks.Gameplay.MMO
 
             // Create inventory slot buttons
             CreateInventorySlots();
+            InitializeInventoryItems();  // Load items and set up item tracking
+            LoadSwordIcons();
 
             // Start hidden
             Hide();
@@ -160,12 +168,103 @@ namespace Blocks.Gameplay.MMO
         }
 
         /// <summary>
-        /// Called when a slot button is clicked.
+        /// Called when a slot button is clicked. Handles equip/unequip for any item slot.
         /// </summary>
         private void OnSlotClicked(int slotIndex)
         {
             Debug.Log($"[InventoryUIController] Slot {slotIndex} clicked!");
-            // TODO: Implement inventory item interaction logic here
+            
+            // Only allow equipping if the slot has an item
+            if (!m_SlotHasItem[slotIndex])
+            {
+                Debug.Log($"[InventoryUIController] Slot {slotIndex} is empty.");
+                return;
+            }
+            
+            // If this slot is already equipped, unequip it
+            if (m_EquippedSlotIndex == slotIndex)
+            {
+                UnequipSlot(slotIndex);
+            }
+            else
+            {
+                // Unequip the previously equipped slot (if any)
+                if (m_EquippedSlotIndex >= 0)
+                {
+                    UnequipSlot(m_EquippedSlotIndex);
+                }
+                
+                // Equip the new slot
+                EquipSlot(slotIndex);
+            }
+        }
+
+        /// <summary>
+        /// Initializes item slot tracking - determines which slots have items.
+        /// Currently populated with two sword items in slots 0 and 5.
+        /// </summary>
+        private void InitializeInventoryItems()
+        {
+            m_SlotHasItem = new bool[inventorySlotCount];
+            
+            // Add items to specific slots (modify this to match your item placement logic)
+            m_SlotHasItem[0] = true;  // Slot 0 has a sword
+            m_SlotHasItem[5] = true;  // Slot 5 has a sword
+            
+            Debug.Log("[InventoryUIController] Inventory items initialized.");
+        }
+
+        /// <summary>
+        /// Loads sword icons for all slots that have items.
+        /// </summary>
+        private void LoadSwordIcons()
+        {
+            // Load the sword sprite from the asset path using AssetDatabase (Editor only)
+            #if UNITY_EDITOR
+            m_SwordSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/GUI_Parts/Gui_parts/lil_roundframe_ready2.png");
+            #endif
+            
+            if (m_SwordSprite == null || m_SlotButtons == null)
+            {
+                Debug.LogWarning("[InventoryUIController] Failed to load sword sprite or slots not created.");
+                return;
+            }
+            
+            // Apply sword sprite to all slots that have items
+            for (int i = 0; i < m_SlotButtons.Length; i++)
+            {
+                if (m_SlotHasItem[i])
+                {
+                    m_SlotButtons[i].style.backgroundImage = new StyleBackground(m_SwordSprite);
+                    m_SlotButtons[i].text = string.Empty;
+                }
+            }
+            
+            Debug.Log("[InventoryUIController] Sword icons loaded into item slots.");
+        }
+
+        /// <summary>
+        /// Equips the item in the specified slot, applying the equipped visual style.
+        /// </summary>
+        private void EquipSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= m_SlotButtons.Length) return;
+            
+            m_EquippedSlotIndex = slotIndex;
+            m_SlotButtons[slotIndex].AddToClassList("inventory-slot-equipped");
+            Debug.Log($"[InventoryUIController] Item equipped (slot {slotIndex}).");
+        }
+
+        /// <summary>
+        /// Unequips the item in the specified slot, removing the equipped visual style.
+        /// </summary>
+        private void UnequipSlot(int slotIndex)
+        {
+            if (slotIndex < 0 || slotIndex >= m_SlotButtons.Length) return;
+            
+            m_SlotButtons[slotIndex].RemoveFromClassList("inventory-slot-equipped");
+            m_EquippedSlotIndex = -1;
+            Debug.Log($"[InventoryUIController] Item unequipped (slot {slotIndex}).");
         }
 
         /// <summary>
@@ -182,8 +281,6 @@ namespace Blocks.Gameplay.MMO
                 m_MmoAddon.CloseInventory();
             }
         }
-
-        /// <summary>
         /// Sets the icon for a specific inventory slot (for future use).
         /// </summary>
         public void SetSlotIcon(int slotIndex, Sprite icon)
