@@ -27,6 +27,12 @@ namespace Blocks.Gameplay.MMO
         [Tooltip("Reference to the MMOAddon that owns this inventory")]
         private MMOAddon m_MmoAddon;
 
+        [Header("Events")]
+        [Tooltip("Event fired when a weapon is equipped from inventory")]
+        [SerializeField] private GameObjectEvent onInventoryItemEquipped;
+        [Tooltip("Event fired when a weapon is unequipped from inventory")]
+        [SerializeField] private GameObjectEvent onInventoryItemUnequipped;
+
         // UI Element References
         private VisualElement m_InventoryPanel;
         private VisualElement m_SlotsContainer;
@@ -245,6 +251,7 @@ namespace Blocks.Gameplay.MMO
 
         /// <summary>
         /// Equips the item in the specified slot, applying the equipped visual style.
+        /// Raises the OnInventoryItemEquipped event with the weapon prefab.
         /// </summary>
         private void EquipSlot(int slotIndex)
         {
@@ -253,10 +260,34 @@ namespace Blocks.Gameplay.MMO
             m_EquippedSlotIndex = slotIndex;
             m_SlotButtons[slotIndex].AddToClassList("inventory-slot-equipped");
             Debug.Log($"[InventoryUIController] Item equipped (slot {slotIndex}).");
+            
+            // Fire the equip event with the weapon prefab
+            // For now, we'll use the sword prefab. In the future, this should be data-driven.
+            Debug.Log("[InventoryUIController] Attempting Resources.Load(\"Prefabs/Weapons/Weapon_SwordDefault\")");
+            GameObject weaponPrefab = Resources.Load<GameObject>("Prefabs/Weapons/Weapon_SwordDefault");
+            
+            if (weaponPrefab == null)
+            {
+                Debug.LogError("[InventoryUIController] [RESOURCE LOAD FAILED] Weapon prefab is NULL! Check path, spelling, and Resources folder exists.");
+                return;
+            }
+            
+            Debug.Log($"[InventoryUIController] [RESOURCE LOADED] Got prefab: {weaponPrefab.name}");
+            
+            if (onInventoryItemEquipped != null)
+            {
+                Debug.Log("[InventoryUIController] [EVENT FIRING] About to raise onInventoryItemEquipped");
+                onInventoryItemEquipped.Raise(weaponPrefab);
+            }
+            else
+            {
+                Debug.LogError("[InventoryUIController] onInventoryItemEquipped event is NULL!");
+            }
         }
 
         /// <summary>
         /// Unequips the item in the specified slot, removing the equipped visual style.
+        /// Raises the OnInventoryItemUnequipped event.
         /// </summary>
         private void UnequipSlot(int slotIndex)
         {
@@ -265,6 +296,12 @@ namespace Blocks.Gameplay.MMO
             m_SlotButtons[slotIndex].RemoveFromClassList("inventory-slot-equipped");
             m_EquippedSlotIndex = -1;
             Debug.Log($"[InventoryUIController] Item unequipped (slot {slotIndex}).");
+            
+            // Fire the unequip event (pass null since nothing is being equipped)
+            if (onInventoryItemUnequipped != null)
+            {
+                onInventoryItemUnequipped.Raise(null);
+            }
         }
 
         /// <summary>
@@ -281,6 +318,8 @@ namespace Blocks.Gameplay.MMO
                 m_MmoAddon.CloseInventory();
             }
         }
+
+        /// <summary>
         /// Sets the icon for a specific inventory slot (for future use).
         /// </summary>
         public void SetSlotIcon(int slotIndex, Sprite icon)
